@@ -93,9 +93,18 @@ class MyApp(ShowBase):
         return Task.cont
 
     def spinPandaTask(self, task):
-        self.pH += u(-10,10) ;
-        #self.pP += u(-10,10) ;
-        #self.pR += u(-10,10) ;
+        mode = 'randHeadingVaryPitch'
+        if mode == 'rot360':
+            self.pH += 0.5 #u(-10,10) ;
+            if self.pH > 360:
+                exit()
+        elif mode == 'randHeading':
+            self.pH += u(-10,10) ;
+        elif mode == 'randHeadingVaryPitch':
+            self.pH += u(-10,10) ;
+            tt = globalClock.get_frame_time()
+            self.pP = sin(tt)*20 ;
+
         self.pandaActor.setHpr(self.pH,self.pP,self.pR) ;
         return Task.cont
 

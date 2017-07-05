@@ -57,7 +57,8 @@ class FlowGen(object):
         self.colour_tex = Texture()
         self.flow_tex_x = Texture()
         self.flow_tex_y = Texture()
-        self.buffer = create_buffer(-100, 75, 75, 2)
+        bwidth, bheight = base.getSize()
+        self.buffer = create_buffer(-100, bwidth, bheight, 2)
         self.buffer.addRenderTexture(self.colour_tex, GraphicsOutput.RTMCopyRam, GraphicsOutput.RTPColor)
         self.buffer.addRenderTexture(self.flow_tex_x, GraphicsOutput.RTMCopyRam, GraphicsOutput.RTPAuxRgba0)
         self.buffer.addRenderTexture(self.flow_tex_y, GraphicsOutput.RTMCopyRam, GraphicsOutput.RTPAuxRgba1)
@@ -74,8 +75,9 @@ class FlowGen(object):
         self.framei = 0
 
     def save_images(self, path='out'):
-        #colarr = np.array(app.colour_tex.get_ram_image_as('RGB'))
-        #colarr = colarr.reshape(app.colour_tex.getYSize(),app.colour_tex.getXSize(),3)[::-1]
+        colarr = np.array(self.colour_tex.get_ram_image_as('RGB'))
+        colarr = colarr.reshape(self.colour_tex.getYSize(),self.colour_tex.getXSize(),3)[::-1]
+
         if self.framei > 1:
             flowarr_x = np.array(self.flow_tex_x.get_ram_image_as('RGB')).astype(np.float32)/255
             flowarr_x = flowarr_x.reshape(self.flow_tex_x.getYSize(), self.flow_tex_x.getXSize(),3)[::-1]
@@ -92,7 +94,7 @@ class FlowGen(object):
     
     
         if self.framei > 0:
-            #skimage.io.imsave('out/dbg/%05d_im.png' % self.framei, np.uint8(colarr))
+            skimage.io.imsave('out/%05d_imm.png' % (self.framei-1), np.uint8(colarr))
             base.win.saveScreenshot(panda3d.core.Filename(os.path.join(path, '%05d_im.png' % self.framei)))
         self.framei += 1
 
