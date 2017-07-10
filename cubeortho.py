@@ -5,6 +5,7 @@ import numpy as np
 import sys
 import computecolor
 import skimage.io
+import double_pendulum
  
 from direct.showbase.ShowBase import ShowBase
 from direct.task import Task
@@ -17,6 +18,9 @@ from panda3d.physics import ActorNode, ForceNode, LinearVectorForce
 from flowgen import *
 
 #np.random.seed(123)
+
+TRANSLATION = True 
+PERSPECTIVE = False
 
 u = lambda a=0., b=1.: (b - a) * np.random.rand() + a
 
@@ -58,12 +62,27 @@ class MyApp(ShowBase):
         spheretex = loader.loadTexture("cube_tex_map.png")
         self.pandaActor.setTexture(spheretex, 1)
         self.pandaActor.setScale(1,1,1)
-        self.pandaActor.setPos(0,0,-.2)
-        self.pH = 0.;
-        self.pP = 0.;
-        self.pR = 0.;
-        self.pandaActor.setHpr(self.pH,self.pP,self.pR) ;
+
+        if TRANSLATION:
+            self.pendulumState = np.radians(100*np.random.randn(4))
+            x,y,xx,yy,s = double_pendulum.simulate(self.pendulumState)
+            self.pendulumState = s
+            print x,y,xx,yy
+            self.pX = xx/2
+            self.pY = 0.
+            self.pZ = yy+1.5
+        else:
+            self.pX = 0.
+            self.pY = 0.
+            self.pZ = 0.
+
+        self.pandaActor.setPos(self.pX,self.pY,self.pZ)
+        self.pH = 0.
+        self.pP = 0.
+        self.pR = 0.
+        self.pandaActor.setHpr(self.pH,self.pP,self.pR)
         self.pandaActor.reparentTo(self.mybase)
+
 
         self.camholder.setPos(0, -17, 0)
         #self.camholder.setHpr(0, 20, 0)
@@ -78,10 +97,11 @@ class MyApp(ShowBase):
         self.flowgen = FlowGen()
         self.flowgen.flow_cam.reparentTo(self.camholder)
 
-        lens = OrthographicLens()
-        lens.setFilmSize(10,10)
-        self.camNode.setLens(lens)
-        self.flowgen.flow_cam.node().setLens(lens)
+        if not PERSPECTIVE:
+            lens = OrthographicLens()
+            lens.setFilmSize(10,10)
+            self.camNode.setLens(lens)
+            self.flowgen.flow_cam.node().setLens(lens)
         setup_flow_shading_on_node(self.mybase)
  
     # Define a procedure to move the camera.
@@ -99,6 +119,13 @@ class MyApp(ShowBase):
         self.pH = sin(tt)*90 ;
         self.pP = sin(.5*tt*np.exp(1))*90 ;
         self.pR = sin(tt*np.sqrt(2))*90 ;
+
+        if TRANSLATION:
+            x,y,xx,yy,s = double_pendulum.simulate(self.pendulumState)
+            self.pendulumState = s
+            self.pX = xx/2
+            self.pZ = yy+1.5
+            self.pandaActor.setPos(self.pX,self.pY,self.pZ)
 
         self.pandaActor.setHpr(self.pH,self.pP,self.pR) ;
         return Task.cont
