@@ -66,6 +66,7 @@ class MyApp(ShowBase):
         self.pH = 0.;
         self.pP = 0.;
         self.pR = 0.;
+        self.rf = 0
         self.pandaActor.setHpr(self.pH,self.pP,self.pR) ;
         self.pandaActor.reparentTo(self.mybase)
 
@@ -93,7 +94,7 @@ class MyApp(ShowBase):
         return Task.cont
 
     def spinPandaTask(self, task):
-        mode = 'randHeadingVaryPitch'
+        mode = 'randHeadingVaryPitchRoll'
         if mode == 'rot360':
             self.pH += 0.5 #u(-10,10) ;
             if self.pH > 360:
@@ -105,6 +106,15 @@ class MyApp(ShowBase):
             tt = globalClock.get_frame_time()
             forwardness = np.cos(self.pH * np.pi/180.)
             self.pP = sin(tt)*15 + 15*forwardness
+        elif mode == 'randHeadingVaryPitchRoll':
+            self.pH += u(-10,10) ;
+            tt = globalClock.get_frame_time()
+            forwardness = np.cos(self.pH * np.pi/180.)
+            self.pP = sin(tt)*15 + 15*forwardness
+            self.rf += np.maximum(0,u(-5,.5))
+            rf = self.rf
+            print rf
+            self.pR = sin(rf+tt)*15 - sin(rf+tt)*15*(1-np.abs(forwardness))
 
         self.pandaActor.setHpr(self.pH,self.pP,self.pR) ;
         return Task.cont
