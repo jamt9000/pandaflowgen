@@ -232,8 +232,9 @@ globalClock.set_dt(.5)
 app.flowgen.store_prev_data(app.mybase)
 
 def generateSequence():
-    for t in range(10000):
-        taskMgr.step()
+    for t in range(400):
+        for s in range(10):
+            taskMgr.step()
 
         app.flowgen.save_images()
     
