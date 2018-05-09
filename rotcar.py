@@ -61,7 +61,7 @@ class MyApp(ShowBase):
         self.pandaActor = loader.loadModel('/home/jdt/Code/code3d/asset-pack/000-vehicles-med/Assets/models/sedanj.egg')
         #spheretex = loader.loadTexture("texture.jpg")
         #self.pandaActor.setTexture(spheretex, 1)
-        self.pandaActor.setScale(.45)
+        self.pandaActor.setScale(.6,.4,.7)
         self.pandaActor.setPos(0,0,-.2)
         self.pH = 0.;
         self.pP = 0.;
@@ -131,8 +131,9 @@ globalClock.set_dt(.1)
 app.flowgen.store_prev_data(app.mybase)
 
 def generateSequence():
-    for t in range(10000):
-        taskMgr.step()
+    for t in range(30000):
+        for s in range(5):
+            taskMgr.step()
 
         app.flowgen.save_images()
     
