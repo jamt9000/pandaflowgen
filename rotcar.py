@@ -58,15 +58,27 @@ class MyApp(ShowBase):
         self.taskMgr.add(self.spinPandaTask, "SpinPandaTask")
  
         # Load and transform the panda actor.
-        self.pandaActor = loader.loadModel('/home/jdt/Code/code3d/asset-pack/000-vehicles-med/Assets/models/sedanj.egg')
-        #spheretex = loader.loadTexture("texture.jpg")
-        #self.pandaActor.setTexture(spheretex, 1)
+        self.pandaActorModel = loader.loadModel('/home/jdt/Code/code3d/asset-pack/000-vehicles-med/Assets/models/sedanj.egg')
+        self.pandaActor = render.attachNewNode('pandaActor')
+        self.pandaActorModel.reparentTo(self.pandaActor)
+        self.pandaActorModel.setPos(0,0,-2)
+
+
         self.pandaActor.setScale(.6,.4,.7)
-        self.pandaActor.setPos(0,0,-.2)
         self.pH = 0.;
         self.pP = 0.;
         self.pR = 0.;
-        self.rf = 0
+
+        self.pX = 0. ;
+        self.pY = 0. ;
+        self.pZ = 0. ;
+
+        self.rphase = 0
+
+        self.xphase = 0
+        self.yphase = 0
+        self.zphase = 0
+
         self.pandaActor.setHpr(self.pH,self.pP,self.pR) ;
         self.pandaActor.reparentTo(self.mybase)
 
@@ -111,12 +123,21 @@ class MyApp(ShowBase):
             tt = globalClock.get_frame_time()
             forwardness = np.cos(self.pH * np.pi/180.)
             self.pP = sin(tt)*15 + 15*forwardness
-            self.rf += np.maximum(0,u(-5,.5))
-            rf = self.rf
-            print rf
-            self.pR = sin(rf+tt)*15 - sin(rf+tt)*15*(1-np.abs(forwardness))
+            self.rphase += np.maximum(0,u(-5,.5))
+            rphase = self.rphase
+            print rphase
+            self.pR = sin(rphase+tt)*15 - sin(rphase+tt)*15*(1-np.abs(forwardness))
+
+            self.pX = sin(.1*tt+self.xphase)*1.5
+            self.pY = sin(.1*tt+self.yphase)*1
+            self.pZ = sin(.1*tt+self.zphase)*2-2
+
+            self.xphase += np.maximum(0,u(-5,.2))
+            self.yphase += np.maximum(0,u(-5,.2))
+            self.zphase += np.maximum(0,u(-5,.2))
 
         self.pandaActor.setHpr(self.pH,self.pP,self.pR) ;
+        self.pandaActorModel.setPos(self.pX,self.pY,self.pZ)
         return Task.cont
 
 
