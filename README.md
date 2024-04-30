@@ -1,6 +1,6 @@
 # PandaFlowGen
 
-This code uses the Panda3D game engine in order to create synthetic optical flow from moving 3D objects
+This code uses the [Panda3D](https://www.panda3d.org/) game engine in order to create synthetic optical flow from moving 3D objects
 
 ## Instructions
 
