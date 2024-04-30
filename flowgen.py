@@ -1,16 +1,20 @@
 import os
-import panda3d.core
-from panda3d.core import *
 import time
+
 import numpy as np
-from numpy import pi, sin, cos
+import panda3d.core
+from numpy import cos, pi, sin
 from numpy.random import rand, randn
+from panda3d.core import *
 
 FILEDIR = os.path.dirname(__file__)
 import sys
+
 sys.path.insert(0, FILEDIR + '/..')
-import computecolor
 import skimage.io
+
+import computecolor
+
 
 def unif(a,b):
     return (b-a) * np.random.rand() + a
@@ -75,6 +79,7 @@ class FlowGen(object):
         self.framei = 0
 
     def save_images(self, path='out'):
+        os.makedirs(path, exist_ok=True)
         colarr = np.array(self.colour_tex.get_ram_image_as('RGB'))
         colarr = colarr.reshape(self.colour_tex.getYSize(),self.colour_tex.getXSize(),3)[::-1]
 
@@ -94,7 +99,7 @@ class FlowGen(object):
     
     
         if self.framei > 0:
-            skimage.io.imsave('out/%05d_imm.png' % (self.framei-1), np.uint8(colarr))
+            skimage.io.imsave(os.path.join(path, '%05d_imm.png' % (self.framei-1)), np.uint8(colarr))
             base.win.saveScreenshot(panda3d.core.Filename(os.path.join(path, '%05d_im.png' % self.framei)))
         self.framei += 1
 
