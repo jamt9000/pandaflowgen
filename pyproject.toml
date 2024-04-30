@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "pandaflowgen"
+version = "0.0.0"
+description = "Optical flow generation with Panda3D"
+authors = ["James Thewlis <james.d.thewlis@gmail.com>"]
+readme = "README.md"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.10"
+panda3d = "1.10.14"
+scikit-image = "^0.23.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
