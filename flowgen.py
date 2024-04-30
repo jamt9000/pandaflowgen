@@ -69,8 +69,8 @@ class FlowGen(object):
         self.flow_cam = base.makeCamera(self.buffer, clearColor=Vec4(1.0,1.0,1.0,1.0),
                                         lens=base.camLens, camName="flowcam")
 
-        flow_shader = Shader.load(Shader.SL_GLSL, vertex=os.path.join(FILEDIR, "test.vert"),
-                                  fragment=os.path.join(FILEDIR, "test.frag"))
+        flow_shader = Shader.load(Shader.SL_GLSL, vertex=os.path.join(FILEDIR, "flow_vertex_shader.vert"),
+                                  fragment=os.path.join(FILEDIR, "flow_fragment_shader.frag"))
         flowshadenode = NodePath("fsn")
         flowshadenode.setShader(flow_shader)
         self.flow_cam.node().setTagStateKey("Flow Shading")
