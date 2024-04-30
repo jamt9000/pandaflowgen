@@ -13,3 +13,14 @@ python panda.py
 # You can visualise the saved optical flow maps with ffmpeg's ffplay
 ffplay -framerate 24 -i "out/%05d_flow_vis.png"
 ```
+
+Or for a bouncing cube:
+
+```
+python cubeortho.py .5
+```
+
+
+
+https://github.com/jamt9000/pandaflowgen/assets/1186841/d6e1c25f-2f8c-45ea-b93c-76537de381c2
+
