@@ -4,31 +4,19 @@
 
 import sys
 
-from direct.showbase.ShowBase import ShowBase
+import numpy as np
 from direct.showbase.DirectObject import DirectObject
 from direct.showbase.InputStateGlobal import inputState
-
-from panda3d.core import AmbientLight
-from panda3d.core import DirectionalLight
-from panda3d.core import Vec3
-from panda3d.core import Vec4
-from panda3d.core import Point3
-from panda3d.core import TransformState
-from panda3d.core import BitMask32
+from direct.showbase.ShowBase import ShowBase
+from panda3d.bullet import (BulletBoxShape, BulletConeTwistConstraint,
+                            BulletDebugNode, BulletPlaneShape,
+                            BulletRigidBodyNode, BulletSoftBodyConfig,
+                            BulletSoftBodyNode, BulletTriangleMesh,
+                            BulletTriangleMeshShape, BulletWorld)
 from panda3d.core import *
+from panda3d.core import (AmbientLight, BitMask32, DirectionalLight, Point3,
+                          TransformState, Vec3, Vec4)
 
-from panda3d.bullet import BulletWorld
-from panda3d.bullet import BulletPlaneShape
-from panda3d.bullet import BulletBoxShape
-from panda3d.bullet import BulletRigidBodyNode
-from panda3d.bullet import BulletDebugNode
-from panda3d.bullet import BulletTriangleMesh
-from panda3d.bullet import BulletTriangleMeshShape
-from panda3d.bullet import BulletSoftBodyNode
-from panda3d.bullet import BulletSoftBodyConfig
-from panda3d.bullet import BulletConeTwistConstraint
-
-import numpy as np
 from flowgen import *
 
 loadPrcFileData("", "basic-shaders-only #f")
@@ -132,13 +120,13 @@ class Game(ShowBase):
     self.world.doPhysics(dt, 10, 0.008)
 
     self.tt += 1
-    print self.tt
+    print(self.tt)
 
     if int(self.tt) % 200 == 0:
         gv = Vec3(np.random.randn()*3, np.random.randn()*3, 0)
-        print gv
-        print base.cam.getPos()
-        print base.cam.getHpr()
+        print(gv)
+        print(base.cam.getPos())
+        print(base.cam.getHpr())
         self.world.setGravity(gv)
 
     return task.cont
