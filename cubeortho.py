@@ -140,7 +140,7 @@ app.flowgen.store_prev_data(app.mybase)
 
 
 def generateSequence():
-    for t in range(100):
+    for t in range(1000):
         taskMgr.step()
 
         app.flowgen.save_images()

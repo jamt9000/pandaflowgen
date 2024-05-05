@@ -2,11 +2,9 @@
 # Double pendulum formula translated from the C code at
 # http://www.physics.usyd.edu.au/~wheat/dpend_html/solve_dpend.c
 
-from numpy import sin, cos
 import numpy as np
-import matplotlib.pyplot as plt
 import scipy.integrate as integrate
-import matplotlib.animation as animation
+from numpy import cos, sin
 
 G = 9.8  # acceleration due to gravity, in m/s^2
 L1 = 1  # length of pendulum 1 in m
